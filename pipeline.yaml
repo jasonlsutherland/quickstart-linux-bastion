@@ -1,0 +1,14 @@
+---
+resources:
+- !resource {type: current_blueprint, name: blueprint}
+jobs:
+- name: deploy
+  plan:
+  - get: blueprint
+  - task: deploy-blueprint
+    file: blueprint/.blueprint/deploy_task.yaml
+- name: destroy
+  plan:
+  - get: blueprint
+  - task : destroy-blueprint
+    file: blueprint/.blueprint/destroy_task.yaml

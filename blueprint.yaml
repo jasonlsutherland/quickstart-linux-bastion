@@ -1,0 +1,32 @@
+name: aws-quickstart-linux-bastion
+version: 0.1.0
+origin: Cloudamize
+summary: Deploys the AWS Linux Bastion Quickstart
+description: Enable bastion services in a new VPC.
+maintainers:
+- jason.sutherland@cloudreach.com
+cloud_service_providers:
+- aws
+tags:
+- Bastion Services
+- AWS
+deployment:
+  pipeline:
+    repo: https://github.com/jasonlsutherland/quickstart-linux-bastion
+    filename: pipeline.yaml
+  prerequisites:
+    - An active AWS account.
+    - An AWS access key and secret.
+  user_parameters:
+    AWS_ACCESS_KEY_ID:
+      type: string
+      description: AWS access key ID
+    AWS_SECRET_ACCESS_KEY:
+      type: string
+      description: AWS secret access key
+    STACK_NAME:
+      type: string
+      description: Name of the CloudFormation stack
+    AWS_REGION:
+      type: string
+      description: Region to deploy the bastion services VPC into
