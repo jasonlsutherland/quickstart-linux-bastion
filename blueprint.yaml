@@ -17,6 +17,7 @@ deployment:
   prerequisites:
     - An active AWS account.
     - An AWS access key and secret.
+    - A key pair named 'default' in eu-west-1 region.
   user_parameters:
     AWS_ACCESS_KEY_ID:
       type: string
@@ -24,9 +25,3 @@ deployment:
     AWS_SECRET_ACCESS_KEY:
       type: string
       description: AWS secret access key
-    STACK_NAME:
-      type: string
-      description: Name of the CloudFormation stack
-    AWS_REGION:
-      type: string
-      description: Region to deploy the bastion services VPC into
