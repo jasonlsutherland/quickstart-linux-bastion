@@ -25,3 +25,6 @@ deployment:
     AWS_SECRET_ACCESS_KEY:
       type: string
       description: AWS secret access key
+    STACK_NAME:
+      type: string
+      description: Name for the deployed stack.
