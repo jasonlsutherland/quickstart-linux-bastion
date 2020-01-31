@@ -5,7 +5,7 @@ AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
 echo "Submitting CloudFormation Template..."
 
 aws cloudformation create-stack --stack-name ${STACK_NAME} \
---template-body file://blueprint/templates/linux-bastion-master.template \
+--template-body file://blueprint/templates/linux-wordpress-master.yaml \
  --capabilities CAPABILITY_IAM
 
 
