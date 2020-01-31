@@ -260,5 +260,5 @@ Resources:
         KeyName: !Ref KeyPairName
         InstanceType: !Ref BastionInstanceType
         DBUser: root
-        DBPassword: toor
-        DBRootPassword: toor
+        DBPassword: toortoor
+        DBRootPassword: toortoor
