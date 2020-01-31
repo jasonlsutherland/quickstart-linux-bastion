@@ -6,7 +6,9 @@ echo "Submitting CloudFormation Template..."
 
 aws cloudformation create-stack --stack-name ${STACK_NAME} \
 --template-body file://blueprint/templates/linux-bastion-master.template \
- --capabilities CAPABILITY_IAM
+ --capabilities CAPABILITY_IAM \
+ --region eu-west-1
+
 
 echo "Waiting for resources to provision (this may take up to 30 minutes)..."
 
