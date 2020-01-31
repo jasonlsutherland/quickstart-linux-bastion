@@ -17,7 +17,7 @@ deployment:
   prerequisites:
     - An active AWS account.
     - An AWS access key and secret.
-    - A key pair named 'default' in eu-west-1 region.
+    - A key pair named 'default' in region deployed to.
   user_parameters:
     AWS_ACCESS_KEY_ID:
       type: string
@@ -25,6 +25,9 @@ deployment:
     AWS_SECRET_ACCESS_KEY:
       type: string
       description: AWS secret access key
+    AWS_DEFAULT_REGION:
+      type: string
+      description: AWS default region
     STACK_NAME:
       type: string
       description: Name for the deployed stack.

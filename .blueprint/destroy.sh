@@ -1,5 +1,7 @@
 #!/bin/bash
 
+AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+
 echo "Destroying CloudFormation Stack..."
 
 aws cloudformation delete-stack --stack-name ${STACK_NAME} \
