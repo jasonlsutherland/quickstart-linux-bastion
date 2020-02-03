@@ -13,7 +13,7 @@ tags:
 - AWS
 deployment:
   pipeline:
-    repo: https://github.com/cloudreach/quickstart-linux-apache-http-and-bastion.git
+    repo: https://github.com/cloudreach/quickstart-linux-apache-http-and-bastion
     filename: pipeline.yaml
   prerequisites:
     - An active AWS account.
