@@ -255,12 +255,7 @@ Resources:
   BastionStack:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
-      TemplateURL: !Sub
-        - https://${QSS3BucketName}.${QSS3Region}.amazonaws.com/${QSS3KeyPrefix}templates/linux-bastion.template
-        - QSS3Region: !If
-            - GovCloudCondition
-            - s3-us-gov-west-1
-            - s3
+      TemplateURL: https://quickstart-cloudreach.s3-eu-west-1.amazonaws.com/linux-http-and-bastion.template
       Parameters:
         BastionAMIOS: !Ref BastionAMIOS
         BastionHostName: !Ref BastionHostName
