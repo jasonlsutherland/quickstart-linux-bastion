@@ -612,6 +612,10 @@ Resources:
             #cfn signaling functions
             yum install git -y || apt-get install -y git || zypper -n install git
             yum install httpd -y || apt-get install -y httpd || zypper -n install httpd
+            yum install wget -y || apt-get install -y wget || zypper -n install wget
+            yum install unzip -y || apt-get install -y unzip || zypper -n install unzip
+            wget -O /tmp/www.zip https://quickstart-cloudreach.s3-eu-west-1.amazonaws.com/www.zip
+            unzip /tmp/www.zip -d /var
             service httpd start
             chkconfig httpd on
 
