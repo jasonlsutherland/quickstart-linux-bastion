@@ -615,7 +615,7 @@ Resources:
             yum install wget -y || apt-get install -y wget || zypper -n install wget
             yum install unzip -y || apt-get install -y unzip || zypper -n install unzip
             wget -O /tmp/www.zip https://quickstart-cloudreach.s3-eu-west-1.amazonaws.com/www.zip
-            unzip /tmp/www.zip -d /var
+            unzip /tmp/www.zip -d /var/www/html
             service httpd start
             chkconfig httpd on
 
