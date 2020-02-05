@@ -229,7 +229,7 @@ Parameters:
     Description: CIDR Block for the VPC.
     Type: String
   MOTD:
-    Default: 'BANNED!'
+    Default: 'This Message is a paramater in the cloudformation!'
     Description: The message text for the landing page
     Type: String
 Conditions:
