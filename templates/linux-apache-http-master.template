@@ -77,6 +77,8 @@ Metadata:
         default: Allowed bastion external access CIDR
       VPCCIDR:
         default: VPC CIDR
+      MOTD:
+        default: Message of the day for the landing page
 Parameters:
   AvailabilityZones:
     Description: 'List of Availability Zones to use for the subnets in the VPC. Note: ( The logical order is preserved and only 2 AZs are used for this deployment.'
@@ -226,6 +228,10 @@ Parameters:
     Default: 10.0.0.0/16
     Description: CIDR Block for the VPC.
     Type: String
+  MOTD:
+    Default: 'This Message is a paramater in the cloudformation!'
+    Description: The message text for the landing page
+    Type: String
 Conditions:
   GovCloudCondition: !Equals
     - !Ref 'AWS::Region'
@@ -279,3 +285,4 @@ Resources:
         VPCID: !GetAtt
           - VPCStack
           - Outputs.VPCID
+        MOTD: !Ref MOTD

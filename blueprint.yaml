@@ -1,18 +1,19 @@
-name: aws-quickstart-linux-bastion
-version: 0.1.0
+name: aws-quickstart-linux-apache-http-and-bastion
+version: 0.2.0
 origin: Cloudamize
-summary: Deploys the AWS Linux Bastion Quickstart
-description: Enable bastion services in a new VPC.
+summary: Deploys the AWS Linux Bastion Quickstart with modification to show case Apache HTTP.
+description: Enable Apache HTTP server and bastion services in a new VPC.
 maintainers:
 - jason.sutherland@cloudreach.com
 cloud_service_providers:
 - aws
 tags:
 - Bastion Services
+- Apache HTTP Server
 - AWS
 deployment:
   pipeline:
-    repo: https://github.com/jasonlsutherland/quickstart-linux-bastion
+    repo: https://github.com/cloudreach/quickstart-linux-apache-http-and-bastion
     filename: pipeline.yaml
   prerequisites:
     - An active AWS account.

@@ -83,6 +83,8 @@ Metadata:
         default: VPC ID
       RootVolumeSize:
         default: Root volume size
+      MOTD:
+        default: Message of the day for the landing page
 Parameters:
   BastionAMIOS:
     AllowedValues:
@@ -228,6 +230,10 @@ Parameters:
     Description: The size in GB for the root EBS volume.
     Type: Number
     Default: '10'
+  MOTD:
+    Default: 'Replace this with your message of the day'
+    Description: The message text for the landing page
+    Type: String
 Rules:
   SubnetsInVPC:
     Assertions:
@@ -437,6 +443,29 @@ Resources:
         Version: 2012-10-17
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM'
+  WebELB:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - !Ref BastionSecurityGroup
+      Subnets:
+        - !Ref PublicSubnet1ID
+        - !Ref PublicSubnet2ID
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort: '80'
+        Protocol: HTTP
+  Route53Record:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: bramblesdemo.aws.crlabs.cloud.
+      Comment: Zone apex alias targeted to Web LoadBalancer.
+      RecordSets:
+      - Name: www.bramblesdemo.aws.crlabs.cloud.
+        Type: A
+        AliasTarget:
+          HostedZoneId: !GetAtt 'WebELB.CanonicalHostedZoneNameID'
+          DNSName: !GetAtt 'WebELB.DNSName'
   BastionHostPolicy:
     Type: 'AWS::IAM::Policy'
     Properties:
@@ -470,8 +499,13 @@ Resources:
                   - aws
             Effect: Allow
           - Action:
-              - 'ec2:AssociateAddress'
               - 'ec2:DescribeAddresses'
+              - 'ec2:AllocateAddress'
+              - 'ec2:ReleaseAddress'
+              - 'ec2:AssociateAddress'
+              - 'ec2:DescribeNetworkInterface'
+              - 'ec2:DescribeInstances'
+              - 'ec2:DisassociateAddress'
             Resource: '*'
             Effect: Allow
       Roles:
@@ -489,10 +523,6 @@ Resources:
           - !Ref BastionHostRole
           - !Ref AlternativeIAMRole
       Path: /
-  EIP1:
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      Domain: vpc
   EIP2:
     Type: 'AWS::EC2::EIP'
     Condition: 2BastionCondition
@@ -519,6 +549,8 @@ Resources:
       MaxSize: !Ref NumBastionHosts
       Cooldown: '300'
       DesiredCapacity: !Ref NumBastionHosts
+      LoadBalancerNames:
+        - !Ref WebELB
       Tags:
         - Key: Name
           Value: !Ref BastionHostName
@@ -616,6 +648,7 @@ Resources:
             yum install unzip -y || apt-get install -y unzip || zypper -n install unzip
             wget -O /tmp/www.zip https://quickstart-cloudreach.s3-eu-west-1.amazonaws.com/www.zip
             unzip /tmp/www.zip -d /var/www/html
+            sed -i 's/MOTD_PLACEHOLDER/${MOTD}/g' /var/www/html/index.html
             service httpd start
             chkconfig httpd on
 
@@ -638,7 +671,7 @@ Resources:
             #qs_bootstrap_pip || qs_err " pip bootstrap failed ";
             qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed ";
 
-            EIP_LIST="${EIP1},${EIP2},${EIP3},${EIP4}"
+            EIP_LIST="52.210.159.119,${EIP2},${EIP3},${EIP4}"
             CLOUDWATCHGROUP=${BastionMainLogGroup}
             cfn-init -v --stack '${AWS::StackName}' --resource BastionLaunchConfiguration --region ${AWS::Region} || cfn_fail
             [ $(qs_status) == 0 ] && cfn_success || cfn_fail
@@ -685,11 +718,6 @@ Outputs:
     Value: !Ref BastionAutoScalingGroup
     Export:
       Name: !Sub '${AWS::StackName}-BastionAutoScalingGroup'
-  EIP1:
-    Description: Elastic IP 1 for Bastion
-    Value: !Ref EIP1
-    Export:
-      Name: !Sub '${AWS::StackName}-EIP1'
   EIP2:
     Condition: 2BastionCondition
     Description: Elastic IP 2 for Bastion
